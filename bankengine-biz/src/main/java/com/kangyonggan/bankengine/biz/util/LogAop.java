@@ -1,5 +1,6 @@
 package com.kangyonggan.bankengine.biz.util;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ public class LogAop {
         Object args[] = joinPoint.getArgs();
 
         String targetName = "LogAop[" + clazz.getName() + "." + methodName + "] - ";
-        log.info(targetName + args);
+        log.info(targetName + "args:" + JSON.toJSONString(args));
 
         long beginTime = DateUtils.getNow().getTime();
         Object result = joinPoint.proceed(args);
@@ -34,5 +35,4 @@ public class LogAop {
         log.info(targetName + "耗时" + (endTime - beginTime) + "ms");
         return result;
     }
-
 }
