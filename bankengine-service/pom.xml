@@ -11,7 +11,7 @@
 
     <artifactId>bankengine-service</artifactId>
 
-    <name>BE :: Module :: Remote</name>
+    <name>BE :: Module :: Service</name>
     <description>对外接口层</description>
 
     <dependencies>

@@ -1,4 +1,4 @@
-package com.kangyonggan.bankengine.biz.cache;
+package com.kangyonggan.bankengine.biz.util;
 
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;

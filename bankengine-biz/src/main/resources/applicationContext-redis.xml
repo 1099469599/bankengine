@@ -31,7 +31,7 @@
     </bean>
 
     <!--自定义缓存配置-->
-    <bean id="redisCacheConfig" class="com.kangyonggan.bankengine.biz.cache.RedisCacheConfig">
+    <bean id="redisCacheConfig" class="com.kangyonggan.bankengine.biz.util.RedisCacheConfig">
         <constructor-arg ref="jedisConnectionFactory" />
         <constructor-arg ref="redisTemplate" />
         <constructor-arg ref="redisCacheManager" />

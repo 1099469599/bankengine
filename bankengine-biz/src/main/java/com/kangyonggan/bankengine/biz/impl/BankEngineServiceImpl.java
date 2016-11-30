@@ -44,6 +44,7 @@ public class BankEngineServiceImpl implements BankEngineService {
      */
     @Override
     public VerifyResponse verify(VerifyRequest verifyRequest) {
+
         return null;
     }
 
@@ -66,8 +67,6 @@ public class BankEngineServiceImpl implements BankEngineService {
      */
     @Override
     public PayResponse pay(PayRequest payRequest) {
-
-        log.info("进入充值：" + payRequest);
 
         // 校验银行是否支持付款操作
 

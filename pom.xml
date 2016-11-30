@@ -353,17 +353,16 @@
     </dependencyManagement>
 
     <distributionManagement>
-        <!-- release稳定版本 -->
         <repository>
             <id>releases</id>
-            <name>Releases</name>
-            <url>http://127.0.0.1:8081/nexus/content/repositories/releases/</url>
+            <name>nexus releases</name>
+            <url>http://localhost:8081/repository/maven-releases/</url>
         </repository>
-        <!-- snapshots快照版本 -->
+
         <snapshotRepository>
             <id>snapshots</id>
-            <name>Snapshots</name>
-            <url>http://127.0.0.1:8081/nexus/content/repositories/snapshots/</url>
+            <name>nexus snapshots</name>
+            <url>http://localhost:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
