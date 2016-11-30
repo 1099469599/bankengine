@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kangyonggan.bankengine.mapper.BeChannelConfMapper" >
+  <resultMap id="BaseResultMap" type="com.kangyonggan.bankengine.model.app.vo.BeChannelConf" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bank_no" property="bankNo" jdbcType="VARCHAR" />
+    <result column="route_name" property="routeName" jdbcType="VARCHAR" />
+    <result column="bank_group_id" property="bankGroupId" jdbcType="VARCHAR" />
+    <result column="pc_recharge" property="pcRecharge" jdbcType="VARCHAR" />
+    <result column="app_recharge" property="appRecharge" jdbcType="VARCHAR" />
+    <result column="ceb_recharge" property="cebRecharge" jdbcType="VARCHAR" />
+    <result column="singel_threashhold" property="singelThreashhold" jdbcType="DECIMAL" />
+    <result column="day_threashhold" property="dayThreashhold" jdbcType="DECIMAL" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="regular_norm" property="regularNorm" jdbcType="VARCHAR" />
+    <result column="auto_recharge" property="autoRecharge" jdbcType="VARCHAR" />
+    <result column="guara_collection" property="guaraCollection" jdbcType="VARCHAR" />
+    <result column="fast_cash" property="fastCash" jdbcType="VARCHAR" />
+    <result column="pre_cash" property="preCash" jdbcType="VARCHAR" />
+    <result column="modify_mobile" property="modifyMobile" jdbcType="VARCHAR" />
+    <result column="find_pwd" property="findPwd" jdbcType="VARCHAR" />
+    <result column="pc_open_account" property="pcOpenAccount" jdbcType="VARCHAR" />
+    <result column="pc_add_card" property="pcAddCard" jdbcType="VARCHAR" />
+    <result column="m_open_account" property="mOpenAccount" jdbcType="VARCHAR" />
+    <result column="m_add_card" property="mAddCard" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="changer" property="changer" jdbcType="VARCHAR" />
+    <result column="sign_type" property="signType" jdbcType="VARCHAR" />
+    <result column="auth_demo_url" property="authDemoUrl" jdbcType="VARCHAR" />
+    <result column="auth_tip" property="authTip" jdbcType="VARCHAR" />
+    <result column="re_sign" property="reSign" jdbcType="VARCHAR" />
+    <result column="terminate_model" property="terminateModel" jdbcType="VARCHAR" />
+    <result column="is_support_verify" property="isSupportVerify" jdbcType="VARCHAR" />
+    <result column="sms_mode" property="smsMode" jdbcType="CHAR" />
+    <result column="chk_file_mode" property="chkFileMode" jdbcType="CHAR" />
+    <result column="is_beta" property="isBeta" jdbcType="CHAR" />
+    <result column="add_card_state" property="addCardState" jdbcType="CHAR" />
+    <result column="add_card_tip" property="addCardTip" jdbcType="VARCHAR" />
+    <result column="recharge_state" property="rechargeState" jdbcType="CHAR" />
+    <result column="recharge_tip" property="rechargeTip" jdbcType="VARCHAR" />
+    <result column="withdraw_state" property="withdrawState" jdbcType="CHAR" />
+    <result column="withdraw_tip" property="withdrawTip" jdbcType="VARCHAR" />
+    <result column="fast_cash_state" property="fastCashState" jdbcType="CHAR" />
+    <result column="fast_cash_tip" property="fastCashTip" jdbcType="VARCHAR" />
+    <result column="del_card_state" property="delCardState" jdbcType="CHAR" />
+    <result column="del_card_tip" property="delCardTip" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>
