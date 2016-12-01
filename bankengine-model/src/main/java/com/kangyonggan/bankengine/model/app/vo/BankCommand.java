@@ -257,7 +257,7 @@ public class BankCommand {
     /**
      * 优先级，1，2，3，4，5
      */
-    private Short priority;
+    private Integer priority;
 
     /**
      * 处理模式，01-b2b，02-b2c，03-网银

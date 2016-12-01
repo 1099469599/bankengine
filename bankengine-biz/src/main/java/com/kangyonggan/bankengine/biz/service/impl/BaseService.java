@@ -10,7 +10,6 @@ import java.util.List;
  * @author kangyonggan
  * @since 16/5/23
  */
-
 @Service
 public abstract class BaseService<T> {
 

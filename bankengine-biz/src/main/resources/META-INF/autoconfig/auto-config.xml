@@ -2,11 +2,11 @@
 <config>
     <group>
         <!-- dubbo -->
-        <property name="dubbo.name" description="提供者名字" defaultValue="API_PROVODER"/>
-        <property name="dubbo.registry.address" description="dubbo注册地址" defaultValue="zookeeper://127.0.0.1:2181?backup=192.168.1.100:2181,192.168.1.104:2181"/>
+        <property name="dubbo.name" description="提供者名字" defaultValue="BE_PROVODER"/>
+        <property name="dubbo.registry.address" description="dubbo注册地址" defaultValue="zookeeper://127.0.0.1:2181"/>
         <property name="dubbo.protocol.port" description="dubbo注册端口" defaultValue="-1"/>
         <property name="dubbo.timeout" description="dubbo超时时间" defaultValue="10000"/>
-        <property name="dubbo.api.version" description="api提供接口的版本" defaultValue="1.0.0"/>
+        <property name="dubbo.version" description="api提供接口的版本" defaultValue="1.0.0"/>
 
         <!-- redis -->
         <property name="redis.maxTotal" description="redis最大连接数" defaultValue="1000" />

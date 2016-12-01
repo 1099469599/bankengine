@@ -1,4 +1,4 @@
-package com.kangyonggan.bankengine.model.app.dto.exception;
+package com.kangyonggan.bankengine.model.app.exception;
 
 import lombok.Data;
 

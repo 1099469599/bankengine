@@ -344,3 +344,153 @@ CREATE INDEX ix_tran_tp
 
 CREATE INDEX ix_mer_date
   ON be_command (mer_date);
+
+DROP TABLE
+IF EXISTS be_tran;
+
+CREATE TABLE be_tran (
+  id             INT         NOT NULL AUTO_INCREMENT
+  COMMENT '主键',
+  bnk_no         VARCHAR(3)  NOT NULL
+  COMMENT '银行代码',
+  mer_tran_co    VARCHAR(20) NOT NULL
+  COMMENT '商户交易代码',
+  mer_tran_nm    VARCHAR(30) COMMENT '商户交易名称',
+  bnk_tran_co    VARCHAR(20) COMMENT '银行交易代码',
+  bnk_tran_nm    VARCHAR(30) COMMENT '银行交易名称',
+  tran_tp        VARCHAR(10) COMMENT '交易类型',
+  syn_flg        VARCHAR(2) COMMENT '同步标记，01-同步，02-异步',
+  bat_flg        VARCHAR(2) COMMENT '批量标记，01-批量，02-单笔，03-汇总',
+  retry_flg      VARCHAR(2) COMMENT '重试标记，01-可重试，02-不可重试',
+  retry_max_time NUMERIC(5, 0) COMMENT '重试最大次数',
+  retry_interval NUMERIC(5, 0) COMMENT '重试间隔（时间单位：分钟）',
+  resnd_flg      VARCHAR(2) COMMENT '重发标记，01-可重发，02-不可重发',
+  resnd_max_time NUMERIC(5, 0) COMMENT '重发最大次数',
+  resnd_interval NUMERIC(5, 0) COMMENT '重发间隔（时间单位：分钟）',
+  qry_flg        VARCHAR(2) COMMENT '查询标记，01-可查询，02-不可查询',
+  qry_tran_co    VARCHAR(20) COMMENT '查询交易代码',
+  qry_tran_nm    VARCHAR(30) COMMENT '查询交易名称',
+  qry_max_time   NUMERIC(5, 0) COMMENT '查询最大次数',
+  qry_interval   NUMERIC(5, 0) COMMENT '查询间隔（时间单位：分钟）',
+  priority       VARCHAR(1) COMMENT '优先级 1，2，3，4，5',
+  model          VARCHAR(2) COMMENT '处理模式，01-b2b，02-b2c，03-网银',
+  c_man          VARCHAR(30) COMMENT '创建人',
+  e_man          VARCHAR(30) COMMENT '编辑人',
+  STATUS         VARCHAR(1) COMMENT '状态，y-正常，n-禁用',
+  is_delete      TINYINT(4)  NOT NULL DEFAULT '0'
+  COMMENT '是否有效,0:有效，1:无效',
+  created_at     TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP
+  COMMENT '数据创建时间',
+  updated_at     TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  COMMENT '数据更新时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY be_tran_unique (bnk_no, mer_tran_co)
+)
+  ENGINE = INNODB
+  DEFAULT CHARSET = utf8
+  COMMENT = '交易代码对应关系表';
+
+CREATE INDEX ix_bnk_no
+  ON be_tran (bnk_no);
+
+CREATE INDEX ix_mer_tran_co
+  ON be_tran (mer_tran_co);
+
+CREATE INDEX ix_created_at
+  ON be_tran (created_at);
+
+CREATE INDEX ix_updated_at
+  ON be_tran (updated_at);
+
+DROP TABLE
+IF EXISTS be_merbase;
+
+CREATE TABLE be_merbase (
+  id          INT         NOT NULL AUTO_INCREMENT
+  COMMENT '主键',
+  bnk_no      VARCHAR(3)  NOT NULL
+  COMMENT '银行代码',
+  mer_id      VARCHAR(30) NOT NULL
+  COMMENT '商户代码',
+  cert_id     VARCHAR(15) COMMENT '商户证书代码',
+  post_id     VARCHAR(30) COMMENT '柜台代码',
+  bran_id     VARCHAR(30) COMMENT '分行代码',
+  contract_no VARCHAR(24) COMMENT '企业协议编号',
+  contract_dt VARCHAR(8) COMMENT '企业协议日期',
+  acct_no     VARCHAR(30) COMMENT '收款账户号',
+  acct_pwd    VARCHAR(16) COMMENT '收款账户密码',
+  c_acct_no   VARCHAR(30) COMMENT '回款账户号',
+  c_acct_pwd  VARCHAR(16) COMMENT '回款账户密码',
+  c_man       VARCHAR(30) COMMENT '创建人',
+  e_man       VARCHAR(30) COMMENT '编辑人',
+  STATUS      VARCHAR(1) COMMENT '状态 y-正常，n-禁用',
+  area_id     VARCHAR(30) COMMENT '商户所在分行区域代码',
+  acct_nm     VARCHAR(50) COMMENT '收款账户名称',
+  c_acct_nm   VARCHAR(50) COMMENT '回款账户名称',
+  is_delete   TINYINT(4)  NOT NULL DEFAULT '0'
+  COMMENT '是否有效,0:有效，1:无效',
+  created_at  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP
+  COMMENT '数据创建时间',
+  updated_at  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  COMMENT '数据更新时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY be_merbase_unique (bnk_no, mer_id)
+)
+  ENGINE = INNODB
+  DEFAULT CHARSET = utf8
+  COMMENT = '商户基本信息表';
+
+CREATE INDEX ix_bnk_no
+  ON be_merbase (bnk_no);
+
+CREATE INDEX ix_mer_id
+  ON be_merbase (mer_id);
+
+CREATE INDEX ix_created_at
+  ON be_merbase (created_at);
+
+CREATE INDEX ix_updated_at
+  ON be_merbase (updated_at);
+
+DROP TABLE
+IF EXISTS be_idtp;
+
+CREATE TABLE be_idtp (
+  id           INT        NOT NULL AUTO_INCREMENT
+  COMMENT '主键',
+  bnk_no       VARCHAR(3) NOT NULL
+  COMMENT '银行代码',
+  bnk_id_tp    VARCHAR(5) NOT NULL
+  COMMENT '银行证件类型',
+  bnk_id_tp_nm VARCHAR(30) COMMENT '银行证件类型名称',
+  mer_id_tp    VARCHAR(1) COMMENT '商户证件类型',
+  mer_id_tp_nm VARCHAR(30) COMMENT '商户证件类型名称',
+  dis_order    NUMERIC(8, 0) COMMENT '展示顺序',
+  dis_flg      VARCHAR(1) COMMENT '展示标志 y-展示，n-不展示',
+  c_man        VARCHAR(30) COMMENT '创建人',
+  e_man        VARCHAR(30) COMMENT '编辑人',
+  STATUS       VARCHAR(1) COMMENT '状态 y-正常，n-禁用',
+  is_delete    TINYINT(4) NOT NULL DEFAULT '0'
+  COMMENT '是否有效,0:有效，1:无效',
+  created_at   TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP
+  COMMENT '数据创建时间',
+  updated_at   TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  COMMENT '数据更新时间',
+  PRIMARY KEY (id),
+  UNIQUE KEY be_idtp_unique (bnk_no, mer_id_tp)
+)
+  ENGINE = INNODB
+  DEFAULT CHARSET = utf8
+  COMMENT = '证件类型对应关系表';
+
+CREATE INDEX ix_bnk_no
+  ON be_idtp (bnk_no);
+
+CREATE INDEX ix_mer_id_tp
+  ON be_idtp (mer_id_tp);
+
+CREATE INDEX ix_created_at
+  ON be_idtp (created_at);
+
+CREATE INDEX ix_updated_at
+  ON be_idtp (updated_at);

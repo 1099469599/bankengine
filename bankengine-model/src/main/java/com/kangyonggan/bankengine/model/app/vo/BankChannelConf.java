@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Table(name = "be_channel_conf")
 @Data
-public class BeChannelConf {
+public class BankChannelConf {
     /**
      * 主键
      */

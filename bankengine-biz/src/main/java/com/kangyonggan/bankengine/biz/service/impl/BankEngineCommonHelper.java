@@ -1,11 +1,13 @@
-package com.kangyonggan.bankengine.biz.impl;
+package com.kangyonggan.bankengine.biz.service.impl;
 
 import com.kangyonggan.bankengine.biz.service.BankCommandService;
+import com.kangyonggan.bankengine.biz.util.DateUtils;
 import com.kangyonggan.bankengine.biz.util.SpringUtils;
-import com.kangyonggan.bankengine.model.app.dto.exception.BankEngineException;
-import com.kangyonggan.bankengine.model.app.dto.exception.BankEngineServiceException;
 import com.kangyonggan.bankengine.model.app.dto.response.CommonResponse;
+import com.kangyonggan.bankengine.model.app.exception.BankEngineException;
+import com.kangyonggan.bankengine.model.app.exception.BankEngineServiceException;
 import com.kangyonggan.bankengine.model.app.vo.BankCommand;
+import com.kangyonggan.bankengine.model.app.vo.BankTran;
 import com.kangyonggan.bankengine.model.constants.CommonErrors;
 import com.kangyonggan.bankengine.model.constants.TransactionStatus;
 import org.apache.commons.lang3.StringUtils;
@@ -20,7 +22,7 @@ import java.util.Map;
  * @author kangyonggan
  * @since 2016/11/30
  */
-public class BankEnginecommonHelper {
+public class BankEngineCommonHelper {
 
     /**
      * 回写简单的响应
@@ -98,5 +100,55 @@ public class BankEnginecommonHelper {
         }
 
         return result;
+    }
+
+    /**
+     * 对于BankCommand中一些统一字段做统一设定。NOTE: 每个接口都会写入相同内容，除了最后的LockSt/TranSt/RvrsSt。
+     *
+     * @param bankCommand
+     */
+    public static void setBankCommandCommonFields(final BankCommand bankCommand) {
+        String date = DateUtils.getCurrentDate();
+        String time = DateUtils.getCurrentTime();
+
+        bankCommand.setMerOrgSerialNo(null);
+        bankCommand.setBnkOrgTranCo(null);
+        bankCommand.setMerDate(date);
+        bankCommand.setMerTime(time);
+        bankCommand.setMerOrgTime(null);
+        bankCommand.setBnkOrgDate(null);
+        bankCommand.setBnkOrgTime(null);
+        bankCommand.setLastTryDate(null);
+        bankCommand.setLastTryTime(null);
+        bankCommand.setInputDate(date);
+        bankCommand.setInputTime(time);
+    }
+
+    /**
+     * 设置交易代码对应关系相关字段
+     *
+     * @param bankCommand
+     * @param bankTran
+     */
+    public static void setBankCommandBankTranRelatedFields(BankCommand bankCommand, BankTran bankTran) {
+        bankCommand.setBnkTranCo(bankTran.getBnkTranCo());//银行交易代码
+        bankCommand.setSynFlg(bankTran.getSynFlg());//同步标记，01-同步，02-异步
+        bankCommand.setBatFlg(bankTran.getBatFlg());//批量标记，01-批量，02-单笔，03-汇总
+        bankCommand.setAcount(0l);//批量笔数
+        bankCommand.setRetryFlg(bankTran.getRetryFlg());//重试标记，01-可重试，02-不可重试
+        bankCommand.setRetryMaxTime(bankTran.getRetryMaxTime());//重试最大次数
+        bankCommand.setRetryInterval(bankTran.getRetryInterval());//重试间隔
+        bankCommand.setRetryCounter(0);//重试次数
+        bankCommand.setResndFlg(bankTran.getResndFlg());//重发标记，01-可重发，02-不可重发
+        bankCommand.setResndMaxTime(bankTran.getResndMaxTime());//重发最大次数
+        bankCommand.setResndInterval(bankTran.getResndInterval());//重发间隔
+        bankCommand.setResndCounter(0);//重发次数
+        bankCommand.setQryFlg(bankTran.getQryFlg());//查询标记，01-可查询，02-不可查询
+        bankCommand.setQryTranCo(bankTran.getQryTranCo());//查询交易代码
+        bankCommand.setQryMaxTime(bankTran.getQryMaxTime());//查询最大次数
+        bankCommand.setQryInterval(bankTran.getQryInterval());//查询间隔
+        bankCommand.setQryCounter(0);//查询次数
+        bankCommand.setPriority(Integer.valueOf(bankTran.getPriority()));//优先级，1，2，3，4，5
+        bankCommand.setModel(bankTran.getModel());//处理模式，01-B2B，02-B2C，03-网银
     }
 }

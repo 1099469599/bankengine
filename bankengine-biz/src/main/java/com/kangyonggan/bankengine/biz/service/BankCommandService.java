@@ -1,5 +1,6 @@
 package com.kangyonggan.bankengine.biz.service;
 
+import com.kangyonggan.bankengine.model.app.dto.SerialNoParaDto;
 import com.kangyonggan.bankengine.model.app.vo.BankCommand;
 
 /**
@@ -11,6 +12,13 @@ import com.kangyonggan.bankengine.model.app.vo.BankCommand;
 public interface BankCommandService {
 
     /**
+     * 指令落库
+     *
+     * @param bankCommand
+     */
+    void saveBankCommand(BankCommand bankCommand);
+
+    /**
      * 根据流水号获取银行指令
      *
      * @param serialNo 流水号
@@ -18,4 +26,11 @@ public interface BankCommandService {
      */
     BankCommand findBankCommandBySerialNo(String serialNo);
 
+    /**
+     * 生成付款的序列号
+     *
+     * @param serialNoParaDto
+     * @return
+     */
+    String genPaySerialNoByNextVal(SerialNoParaDto serialNoParaDto);
 }

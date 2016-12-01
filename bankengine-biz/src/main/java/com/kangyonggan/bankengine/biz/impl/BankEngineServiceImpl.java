@@ -2,6 +2,7 @@ package com.kangyonggan.bankengine.biz.impl;
 
 import com.kangyonggan.bankengine.biz.service.BankEnginePayService;
 import com.kangyonggan.bankengine.biz.service.impl.BankEngineCommonService;
+import com.kangyonggan.bankengine.biz.service.impl.BankEngineCommonHelper;
 import com.kangyonggan.bankengine.biz.service.impl.OperationChecker;
 import com.kangyonggan.bankengine.model.app.dto.request.*;
 import com.kangyonggan.bankengine.model.app.dto.response.*;
@@ -90,7 +91,7 @@ public class BankEngineServiceImpl implements BankEngineService {
         // 校验银行是否支持付款操作
         boolean checkIfCanPay = operationChecker.checkIfCanPay(payRequest.getBankNo(), payRequest.getAccpTmd());
         if (!checkIfCanPay) {
-            BankEnginecommonHelper.generateSimpleResponse(response, TransactionStatus.F, CommonErrors.NotSupportTran.getCode(), "该银行通道目前暂停支付!");
+            BankEngineCommonHelper.generateSimpleResponse(response, TransactionStatus.F, CommonErrors.NotSupportTran.getCode(), "该银行通道目前暂停支付!");
             log.info("通道暂停支付！");
             return response;
         }
@@ -98,7 +99,7 @@ public class BankEngineServiceImpl implements BankEngineService {
         // 交易是否是重复交易(根据业务流水，判断当前交易之前是否曾经发起过)
         boolean isRepeatedTrade = bankEngineCommonService.isRepeatedTrade(payRequest.getRefAppNo());
         if (isRepeatedTrade) {
-            BankEnginecommonHelper.generateSimpleResponse(response, TransactionStatus.F, CommonErrors.NotSupportTran.getCode(), "不可发起重复交易!");
+            BankEngineCommonHelper.generateSimpleResponse(response, TransactionStatus.F, CommonErrors.NotSupportTran.getCode(), "不可发起重复交易!");
             log.info("重复支付交易！");
             return response;
         }
@@ -109,10 +110,10 @@ public class BankEngineServiceImpl implements BankEngineService {
             response = bankEnginePayService.payWithException(payRequest);
         } catch (Exception e) {
             // 捕获异常
-            result = BankEnginecommonHelper.handleException(payRequest, e, log);
+            result = BankEngineCommonHelper.handleException(payRequest, e, log);
         }
 
-        BankEnginecommonHelper.generateServiceResponse(response, result.get("errCode"), result.get("errMsg"));
+        BankEngineCommonHelper.generateServiceResponse(response, result.get("errCode"), result.get("errMsg"));
 
         return response;
     }

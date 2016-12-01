@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kangyonggan.bankengine.mapper.BankTranMapper" >
+  <resultMap id="BaseResultMap" type="com.kangyonggan.bankengine.model.app.vo.BankTran" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="bnk_no" property="bnkNo" jdbcType="VARCHAR" />
+    <result column="mer_tran_co" property="merTranCo" jdbcType="VARCHAR" />
+    <result column="mer_tran_nm" property="merTranNm" jdbcType="VARCHAR" />
+    <result column="bnk_tran_co" property="bnkTranCo" jdbcType="VARCHAR" />
+    <result column="bnk_tran_nm" property="bnkTranNm" jdbcType="VARCHAR" />
+    <result column="tran_tp" property="tranTp" jdbcType="VARCHAR" />
+    <result column="syn_flg" property="synFlg" jdbcType="VARCHAR" />
+    <result column="bat_flg" property="batFlg" jdbcType="VARCHAR" />
+    <result column="retry_flg" property="retryFlg" jdbcType="VARCHAR" />
+    <result column="retry_max_time" property="retryMaxTime" jdbcType="DECIMAL" />
+    <result column="retry_interval" property="retryInterval" jdbcType="DECIMAL" />
+    <result column="resnd_flg" property="resndFlg" jdbcType="VARCHAR" />
+    <result column="resnd_max_time" property="resndMaxTime" jdbcType="DECIMAL" />
+    <result column="resnd_interval" property="resndInterval" jdbcType="DECIMAL" />
+    <result column="qry_flg" property="qryFlg" jdbcType="VARCHAR" />
+    <result column="qry_tran_co" property="qryTranCo" jdbcType="VARCHAR" />
+    <result column="qry_tran_nm" property="qryTranNm" jdbcType="VARCHAR" />
+    <result column="qry_max_time" property="qryMaxTime" jdbcType="DECIMAL" />
+    <result column="qry_interval" property="qryInterval" jdbcType="DECIMAL" />
+    <result column="priority" property="priority" jdbcType="VARCHAR" />
+    <result column="model" property="model" jdbcType="VARCHAR" />
+    <result column="c_man" property="cMan" jdbcType="VARCHAR" />
+    <result column="e_man" property="eMan" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="TINYINT" />
+    <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+  </resultMap>
+</mapper>

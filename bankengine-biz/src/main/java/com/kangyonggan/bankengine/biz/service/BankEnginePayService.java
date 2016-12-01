@@ -1,6 +1,6 @@
 package com.kangyonggan.bankengine.biz.service;
 
-import com.kangyonggan.bankengine.model.app.dto.exception.BankEngineServiceException;
+import com.kangyonggan.bankengine.model.app.exception.BankEngineServiceException;
 import com.kangyonggan.bankengine.model.app.dto.request.PayRequest;
 import com.kangyonggan.bankengine.model.app.dto.response.PayResponse;
 

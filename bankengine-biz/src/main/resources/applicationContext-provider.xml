@@ -20,6 +20,6 @@
 
     <!-- dubbo对外开放接口 -->
     <dubbo:service interface="com.kangyonggan.bankengine.service.BankEngineService"
-                   ref="bankEngineService" version="${dubbo.api.version}" retries="0" timeout="${dubbo.timeout}"/>
+                   ref="bankEngineService" version="${dubbo.version}" retries="0" timeout="${dubbo.timeout}"/>
 
 </beans>

@@ -1,7 +1,7 @@
 package com.kangyonggan.bankengine.model.app.dto.response;
 
 import com.kangyonggan.bankengine.model.BaseObject;
-import com.kangyonggan.bankengine.model.app.dto.exception.BankEngineException;
+import com.kangyonggan.bankengine.model.app.exception.BankEngineException;
 import com.kangyonggan.bankengine.model.constants.TransactionStatus;
 import lombok.Data;
 
