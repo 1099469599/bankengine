@@ -32,6 +32,7 @@ public class LogAop {
         Object result = joinPoint.proceed(args);
         long endTime = DateUtils.getNow().getTime();
 
+        log.info(targetName + "return:" + JSON.toJSONString(result));
         log.info(targetName + "耗时" + (endTime - beginTime) + "ms");
         return result;
     }

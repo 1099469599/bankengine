@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Table(name = "be_command")
 @Data
-public class BeCommand {
+public class BankCommand {
     /**
      * 主键
      */
