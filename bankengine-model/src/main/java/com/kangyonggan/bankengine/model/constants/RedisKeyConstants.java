@@ -13,4 +13,8 @@ public interface RedisKeyConstants {
      */
     String KEY_BE_SN_COMMAND = "BE:SN:COMMAND";
 
+    /**
+     * 银行指令锁序列(锁定，解锁)
+     */
+    String KEY_BE_SN_LOCK = "BE:SN:LOCK";
 }

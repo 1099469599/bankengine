@@ -1,9 +1,10 @@
 package com.kangyonggan.bankengine.model.app.vo;
 
+import lombok.Data;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
-import lombok.Data;
 
 @Table(name = "be_command")
 @Data

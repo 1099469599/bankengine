@@ -2,18 +2,22 @@ package com.kangyonggan.bankengine.biz.service.impl;
 
 import com.kangyonggan.bankengine.biz.service.BankCommandService;
 import com.kangyonggan.bankengine.biz.service.BankEnginePayService;
+import com.kangyonggan.bankengine.biz.service.ExecuteEngineService;
 import com.kangyonggan.bankengine.mapper.BankIdtpMapper;
 import com.kangyonggan.bankengine.model.app.BankSetting;
-import com.kangyonggan.bankengine.model.app.dto.SerialNoParaDto;
+import com.kangyonggan.bankengine.model.app.CommandHttpType;
+import com.kangyonggan.bankengine.model.app.Result;
+import com.kangyonggan.bankengine.model.app.dto.*;
 import com.kangyonggan.bankengine.model.app.dto.request.PayRequest;
 import com.kangyonggan.bankengine.model.app.dto.response.PayResponse;
+import com.kangyonggan.bankengine.model.app.exception.BankEngineException;
 import com.kangyonggan.bankengine.model.app.exception.BankEngineServiceException;
 import com.kangyonggan.bankengine.model.app.exception.BankSettingException;
 import com.kangyonggan.bankengine.model.app.vo.BankCommand;
 import com.kangyonggan.bankengine.model.app.vo.BankIdtp;
 import com.kangyonggan.bankengine.model.app.vo.BankMerchant;
 import com.kangyonggan.bankengine.model.app.vo.BankTran;
-import com.kangyonggan.bankengine.model.constants.AppConstants;
+import com.kangyonggan.bankengine.model.constants.*;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,9 @@ import java.math.BigDecimal;
 @Service
 @Log4j2
 public class BankenginePayServiceImpl implements BankEnginePayService {
+
+    @Autowired
+    private ExecuteEngineService executeEngineService;
 
     @Autowired
     private BankCommandService bankCommandService;
@@ -60,12 +67,18 @@ public class BankenginePayServiceImpl implements BankEnginePayService {
         String serialNo = bankCommand.getSerialNo();
         log.info("写入银行支付指令成功, accountNo:{}, serialNo:{}", payRequest.getSenderAccountNo(), serialNo);
 
-        // 执行同步指令
+        // 产生银行指令执行的输入参数
+        BankExecuteParaDto inputParameter = BankEngineCommonHelper.generateInputParameter(serialNo, bankCommand.getBnkNo(), BankEngineConstants.APKIND_PURCHASE);
 
+        // 执行同步指令
+        Result<BankExecuteReturnDto> outputParameter = executeEngineService.executeSync(inputParameter);
+        log.info("执行银行支付指令成功. accountNo:" + payRequest.getSenderAccountNo());
 
         // 生成支付结果
+        PayResponse payResponse = generatePayResponse(outputParameter.getModel(), serialNo);
+        log.info("支付接口返回成功. payResponse:" + payResponse);
 
-        return new PayResponse();
+        return payResponse;
     }
 
     /**
@@ -170,6 +183,68 @@ public class BankenginePayServiceImpl implements BankEnginePayService {
     }
 
     /**
+     * 生成支付结果
+     *
+     * @param bankExecuteReturnDto
+     * @param serialNo
+     * @return
+     */
+    private PayResponse generatePayResponse(final BankExecuteReturnDto bankExecuteReturnDto, final String serialNo) {
+        PayResponse payResponse = new PayResponse();
+        payResponse.setSerialNo(serialNo);
+
+        BankEngineException bankEngineException = new BankEngineException();
+
+        ResponsionDto respDto = bankExecuteReturnDto.getRespDto();
+        if (respDto != null) {
+            //设置银行返回的错误
+            bankEngineException.setBankErrorCode(respDto.getRespCo());
+            bankEngineException.setBankErrorMessage(respDto.getRespMsg());
+
+            //设置商户返回的错误
+            bankEngineException.setMerchantErrorCode(respDto.getMerRespCo());
+            bankEngineException.setMerchantErrorMessage(respDto.getMerRespMsg());
+        } else {
+            if (TransactionMessageDto.STATE_SUCCESS.equals(bankExecuteReturnDto.getCommandStatus()) || TransactionMessageDto.STATE_IN_HAND.equals(bankExecuteReturnDto.getCommandStatus())) {
+                //FOR B2C
+                payResponse.setTransactionStatus(TransactionStatus.I); //此时数据库TranSt为N，也所需返回状态不符，需要特殊处理
+
+                //设置银行返回的错误
+                bankEngineException.setBankErrorCode(EBankParamConstant.PM_CO_EBANK$MER_RESP_CO$I);
+                bankEngineException.setBankErrorMessage(EBankParamConstant.PM_NM_EBANK$MER_RESP_CO$I);
+
+                //设置商户返回的错误
+                bankEngineException.setMerchantErrorCode(EBankParamConstant.PM_CO_EBANK$MER_RESP_CO$I);
+                bankEngineException.setMerchantErrorMessage(EBankParamConstant.PM_NM_EBANK$MER_RESP_CO$I);
+            } else {
+                //设置银行返回的错误
+                bankEngineException.setBankErrorCode("099");
+                bankEngineException.setBankErrorMessage("未知异常！");
+
+                //设置商户返回的错误
+                bankEngineException.setMerchantErrorCode(CommonErrors.UnknowError.getCode());
+                bankEngineException.setMerchantErrorMessage(CommonErrors.UnknowError.getMsg());
+            }
+        }
+
+        payResponse.setReturnUrl(bankExecuteReturnDto.getB2CRedUrl());
+        payResponse.setFormBean(bankExecuteReturnDto.getFormbean());
+
+        payResponse.setCommandHttpType(CommandHttpType.valueOf(bankExecuteReturnDto.getHttpType()));
+
+        //设置BE返回的错误
+        BankEngineServiceException beException = bankExecuteReturnDto.getBankEngineServiceException();
+        if (beException != null) {
+            bankEngineException.setExceptionCode(beException.getExceptionCode());
+            bankEngineException.setExceptionMessage(beException.getExceptionMessage());
+        }
+
+        payResponse.setBankEngineException(bankEngineException);
+
+        return payResponse;
+    }
+
+    /**
      * 生成流水号
      *
      * @param payRequest
@@ -233,7 +308,7 @@ public class BankenginePayServiceImpl implements BankEnginePayService {
                 return bankIdtp.getBnkIdTp();
             }
         } catch (Exception e) {
-            log.error("获取证件类型异常,bankNo:" + bankNo + ",idTp:" + payRequest.getSenderIdType() , e);
+            log.error("获取证件类型异常,bankNo:" + bankNo + ",idTp:" + payRequest.getSenderIdType(), e);
         }
 
         return payRequest.getSenderIdType();

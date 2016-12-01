@@ -494,3 +494,44 @@ CREATE INDEX ix_created_at
 
 CREATE INDEX ix_updated_at
   ON be_idtp (updated_at);
+
+DROP TABLE
+IF EXISTS be_card_bin;
+
+CREATE TABLE be_card_bin (
+  id          INT           NOT NULL AUTO_INCREMENT
+  COMMENT '主键',
+  bank_group  VARCHAR(4)    NOT NULL
+  COMMENT '所属银行',
+  card_length NUMERIC(2, 0) NOT NULL
+  COMMENT '卡号长度',
+  bin_code    VARCHAR(20)   NOT NULL
+  COMMENT '卡bin',
+  bin_length  NUMERIC(2, 0) NOT NULL
+  COMMENT '卡bin长度',
+  card_type   VARCHAR(1)    NOT NULL
+  COMMENT '卡类型',
+  is_delete   TINYINT(4)    NOT NULL DEFAULT '0'
+  COMMENT '是否有效,0:有效，1:无效',
+  created_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP
+  COMMENT '数据创建时间',
+  updated_at  TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  COMMENT '数据更新时间',
+  PRIMARY KEY (id)
+)
+  ENGINE = INNODB
+  DEFAULT CHARSET = utf8
+  COMMENT = '卡bin详情表';
+
+
+CREATE INDEX ix_bin_length
+  ON be_card_bin (bin_length);
+
+CREATE INDEX ix_bin_code
+  ON be_card_bin (bin_code);
+
+CREATE INDEX ix_created_at
+  ON be_card_bin (created_at);
+
+CREATE INDEX ix_updated_at
+  ON be_card_bin (updated_at);

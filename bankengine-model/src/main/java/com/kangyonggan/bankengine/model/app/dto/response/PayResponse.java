@@ -6,7 +6,7 @@ package com.kangyonggan.bankengine.model.app.dto.response;
  * @author kangyonggan
  * @since 2016/11/30
  */
-public class PayResponse extends CommonResponse {
+public class PayResponse extends B2CResponse {
 
     public String toString() {
         return super.toString();

@@ -1,5 +1,6 @@
 package com.kangyonggan.bankengine.biz.service;
 
+import com.kangyonggan.bankengine.model.app.dto.CommandDto;
 import com.kangyonggan.bankengine.model.app.dto.SerialNoParaDto;
 import com.kangyonggan.bankengine.model.app.vo.BankCommand;
 
@@ -33,4 +34,13 @@ public interface BankCommandService {
      * @return
      */
     String genPaySerialNoByNextVal(SerialNoParaDto serialNoParaDto);
+
+    /**
+     * 根据serialNo更新并获取银行指令
+     *
+     * @param serialNo
+     * @return
+     */
+    BankCommand getBankCommandAfterUpdate(String serialNo);
+
 }
